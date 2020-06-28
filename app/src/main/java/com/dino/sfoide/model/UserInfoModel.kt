@@ -1,9 +1,12 @@
 package com.dino.sfoide.model
 
+import android.os.Parcelable
 import com.dino.sfoide.data.model.UserInfoEntity
 import com.dino.sfoide.enums.Flag
 import com.dino.sfoide.enums.Gender
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class UserInfoModel(
     val fullName: String,
     val thumbnail: String,
@@ -13,7 +16,7 @@ data class UserInfoModel(
     val phone: String,
     val cell: String,
     val email: String
-)
+) : Parcelable
 
 fun UserInfoEntity.toThumbnail() =
     UserInfoModel(

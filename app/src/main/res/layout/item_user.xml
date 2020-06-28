@@ -8,12 +8,17 @@
             name="item"
             type="com.dino.sfoide.model.UserInfoModel" />
 
+        <variable
+            name="vm"
+            type="com.dino.sfoide.ui.MainViewModel" />
+
     </data>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp">
+        android:layout_margin="8dp"
+        android:onClick="@{() -> vm.showUserDetail(item)}">
 
         <LinearLayout
             android:layout_width="match_parent"

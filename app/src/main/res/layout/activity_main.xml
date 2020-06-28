@@ -23,6 +23,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             bind:dino_itemLayout="@{@layout/item_user}"
             bind:dino_items="@{vm.userInfoList}"
+            bind:dino_vm="@{vm}"
             tools:itemCount="3"
             tools:listitem="@layout/item_user" />
 
