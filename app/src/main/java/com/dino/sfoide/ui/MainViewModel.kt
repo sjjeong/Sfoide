@@ -8,6 +8,7 @@ import com.dino.library.util.Event
 import com.dino.sfoide.data.repository.RandomUserRepository
 import com.dino.sfoide.model.UserInfoModel
 import com.dino.sfoide.model.toThumbnail
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val randomUserRepository: RandomUserRepository) : DinoViewModel() {
@@ -19,9 +20,19 @@ class MainViewModel(private val randomUserRepository: RandomUserRepository) : Di
     val showUserDetail: LiveData<Event<UserInfoModel>> = _showUserDetail
 
     init {
+        initLoad()
+    }
+
+    private fun initLoad() {
         viewModelScope.launch {
+            launch(Dispatchers.Main) {
+                showLoading()
+            }
             val userInfoList = randomUserRepository.getRandomUser(1, 20)
             _userInfoList.postValue(userInfoList.map { it.toThumbnail() })
+            launch(Dispatchers.Main) {
+                hideLoading()
+            }
         }
     }
 

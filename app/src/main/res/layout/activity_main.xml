@@ -6,6 +6,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="vm"
             type="com.dino.sfoide.ui.MainViewModel" />
@@ -26,6 +28,12 @@
             bind:dino_vm="@{vm}"
             tools:itemCount="3"
             tools:listitem="@layout/item_user" />
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="@{vm.liveLoading ? View.VISIBLE : View.GONE}" />
 
     </FrameLayout>
 </layout>
