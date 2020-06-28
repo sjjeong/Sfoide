@@ -1,13 +1,8 @@
 package com.dino.sfoide.ui
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
+import com.dino.library.ui.DinoActivity
+import com.dino.library.ui.DinoViewModel
 import com.dino.sfoide.R
+import com.dino.sfoide.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-    }
-}
+class MainActivity : DinoActivity<ActivityMainBinding, MainViewModel>(R.layout.activity_main)
