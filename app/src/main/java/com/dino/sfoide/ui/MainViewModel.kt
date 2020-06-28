@@ -18,11 +18,14 @@ class MainViewModel(private val randomUserRepository: RandomUserRepository) : Di
     private val _refreshLoading = MutableLiveData(false)
     val refreshLoading: LiveData<Boolean> = _refreshLoading
 
-    private val _userInfoList = MutableLiveData<List<UserInfoModel>>()
-    val userInfoList: LiveData<List<UserInfoModel>> = _userInfoList
+    private val _userInfoList = MutableLiveData<MutableList<UserInfoModel>>(mutableListOf())
+    val userInfoList: LiveData<MutableList<UserInfoModel>> = _userInfoList
 
     private val _showUserDetail = MutableLiveData<Event<UserInfoModel>>()
     val showUserDetail: LiveData<Event<UserInfoModel>> = _showUserDetail
+
+    private val _refreshEvent = MutableLiveData<Event<Unit>>()
+    val refreshEvent: LiveData<Event<Unit>> = _refreshEvent
 
     init {
         load()
@@ -31,6 +34,8 @@ class MainViewModel(private val randomUserRepository: RandomUserRepository) : Di
     fun refresh(){
         page = 0
         _refreshLoading.value = true
+        _refreshEvent.value = Event(Unit)
+        _userInfoList.value = mutableListOf()
         load()
     }
 
@@ -40,8 +45,10 @@ class MainViewModel(private val randomUserRepository: RandomUserRepository) : Di
             launch(Dispatchers.Main) {
                 showLoading()
             }
-            val userInfoList = randomUserRepository.getRandomUser(page, 20)
-            _userInfoList.postValue(userInfoList.map { it.toThumbnail() })
+            val userInfoList = randomUserRepository.getRandomUser(page, 20).map { it.toThumbnail() }
+            val newList = _userInfoList.value
+            newList?.addAll(userInfoList)
+            _userInfoList.postValue(newList)
             launch(Dispatchers.Main) {
                 hideLoading()
                 _refreshLoading.value = false
