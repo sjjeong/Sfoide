@@ -2,8 +2,10 @@ package com.dino.sfoide.ui.detail
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.core.os.bundleOf
+import androidx.lifecycle.Observer
 import com.dino.library.ui.DinoActivity
 import com.dino.sfoide.R
 import com.dino.sfoide.databinding.ActivityUserDetailBinding
@@ -27,6 +29,22 @@ class UserDetailActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel {
+            callEvent.observe(this@UserDetailActivity, Observer { event ->
+                event.get {
+                    val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$it"))
+                    startActivity(intent)
+                }
+            })
+            sendEmailEvent.observe(this@UserDetailActivity, Observer { event ->
+                event.get {
+                    val intent = Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:")).apply {
+                        putExtra(Intent.EXTRA_EMAIL, arrayOf(it))
+                    }
+                    startActivity(intent)
+                }
+            })
+        }
         (supportFragmentManager.findFragmentById(R.id.map) as?
                 SupportMapFragment)?.getMapAsync(this@UserDetailActivity)
     }
