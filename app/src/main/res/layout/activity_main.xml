@@ -14,26 +14,35 @@
 
     </data>
 
-    <FrameLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.MainActivity">
+        app:onRefreshListener="@{() -> vm.refresh()}"
+        app:refreshing="@{vm.refreshLoading}">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            bind:dino_itemLayout="@{@layout/item_user}"
-            bind:dino_items="@{vm.userInfoList}"
-            bind:dino_vm="@{vm}"
-            tools:itemCount="3"
-            tools:listitem="@layout/item_user" />
+            android:layout_height="match_parent"
+            tools:context=".ui.MainActivity">
 
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="@{vm.liveLoading ? View.VISIBLE : View.GONE}" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                bind:dino_itemLayout="@{@layout/item_user}"
+                bind:dino_items="@{vm.userInfoList}"
+                bind:dino_vm="@{vm}"
+                tools:itemCount="3"
+                tools:listitem="@layout/item_user" />
 
-    </FrameLayout>
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="@{vm.liveLoading &amp;&amp; !vm.refreshLoading ? View.VISIBLE : View.GONE}" />
+
+        </FrameLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 </layout>

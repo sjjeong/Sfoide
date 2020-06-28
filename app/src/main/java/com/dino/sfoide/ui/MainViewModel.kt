@@ -13,6 +13,11 @@ import kotlinx.coroutines.launch
 
 class MainViewModel(private val randomUserRepository: RandomUserRepository) : DinoViewModel() {
 
+    private var page = 0
+
+    private val _refreshLoading = MutableLiveData(false)
+    val refreshLoading: LiveData<Boolean> = _refreshLoading
+
     private val _userInfoList = MutableLiveData<List<UserInfoModel>>()
     val userInfoList: LiveData<List<UserInfoModel>> = _userInfoList
 
@@ -20,18 +25,26 @@ class MainViewModel(private val randomUserRepository: RandomUserRepository) : Di
     val showUserDetail: LiveData<Event<UserInfoModel>> = _showUserDetail
 
     init {
-        initLoad()
+        load()
     }
 
-    private fun initLoad() {
+    fun refresh(){
+        page = 0
+        _refreshLoading.value = true
+        load()
+    }
+
+    fun load() {
+        page++
         viewModelScope.launch {
             launch(Dispatchers.Main) {
                 showLoading()
             }
-            val userInfoList = randomUserRepository.getRandomUser(1, 20)
+            val userInfoList = randomUserRepository.getRandomUser(page, 20)
             _userInfoList.postValue(userInfoList.map { it.toThumbnail() })
             launch(Dispatchers.Main) {
                 hideLoading()
+                _refreshLoading.value = false
             }
         }
     }
