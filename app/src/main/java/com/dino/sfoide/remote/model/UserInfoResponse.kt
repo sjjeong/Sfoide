@@ -92,9 +92,9 @@ data class UserInfoResponse(
 
         data class Coordinates(
             @SerializedName("latitude")
-            val latitude: String,
+            val latitude: Double,
             @SerializedName("longitude")
-            val longitude: String
+            val longitude: Double
         ) {
             fun toData() = UserInfoEntity.Location.Coordinates(latitude, longitude)
         }

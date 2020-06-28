@@ -34,8 +34,8 @@ data class UserInfoEntity(
             val timezone: Timezone
         ) {
             data class Coordinates(
-                val latitude: String,
-                val longitude: String
+                val latitude: Double,
+                val longitude: Double
             )
 
             data class Street(

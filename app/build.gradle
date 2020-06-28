@@ -41,4 +41,6 @@ android {
 
 dependencies {
     api project(":dino-library")
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'androidx.appcompat:appcompat:1.1.0'
 }
